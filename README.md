@@ -1,5 +1,8 @@
 baseball
 ===========
+
+[![Build Status](https://travis-ci.org/bengreenier/baseball.svg?branch=master)](https://travis-ci.org/bengreenier/baseball)
+
 provides simplified promise error handling
 
 # How?
@@ -12,31 +15,60 @@ Just `npm install baseball`
 
 ## Use
 
-With existing promises:
+With Promises:
 ```
-var baseball = require('baseball');
+var baseball = require('baseball')();
 
 var throwAPitch = new Promise(function (resolve, reject) {
   reject(new Error("sports are hard"));
 });
 
 // automatically catches and logs to console.error
-// ERR: sports are hard
-// and then rethrows (optionally)
+// Error: sports are hard
+//
 throwAPitch.catch(baseball);
 ```
 
-With baseball wrapped promises:
+With options (messagePrefix):
 ```
-var baseball = require('baseball');
+var baseball = require('baseball')("PREPEND ME: ");
 
-new baseball.promise(function (resolve, reject) {
+var throwAPitch = new Promise(function (resolve, reject) {
   reject(new Error("everything is awful"));
 });
 
 // automatically catches and logs to console.error
-// ERR: everything is awful
-// and then rethrows (optionally)
+// PREPEND ME: Error: everything is awful
+//
+throwAPitch.catch(baseball);
+```
+
+With options (logger):
+```
+var baseball = require('baseball')(bunyan.error);
+
+var throwAPitch = new Promise(function (resolve, reject) {
+  reject(new Error("everything is awful"));
+});
+
+// automatically catches and logs to bunyan
+// Error: everything is awful
+//
+throwAPitch.catch(baseball);
+```
+
+With explicit options:
+```
+var baseball = require('baseball')({messagePrefix: "PREPEND ME: ", logger: bunyan.error});
+
+var throwAPitch = new Promise(function (resolve, reject) {
+  reject(new Error("everything is awful"));
+});
+
+// automatically catches and logs to bunyan
+// PREPEND ME: Error: everything is awful
+//
+throwAPitch.catch(baseball);
 ```
 
 # Why?

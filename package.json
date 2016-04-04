@@ -1,0 +1,28 @@
+{
+  "name": "baseball",
+  "version": "0.1.0",
+  "description": "provides simplified promise error handling",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bengreenier/baseball.git"
+  },
+  "keywords": [
+    "promise",
+    "error",
+    "handling"
+  ],
+  "author": "Ben Greenier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bengreenier/baseball/issues"
+  },
+  "homepage": "https://github.com/bengreenier/baseball#readme",
+  "devDependencies": {
+    "es6-promise": "^3.1.2",
+    "mocha": "^2.4.5"
+  }
+}
