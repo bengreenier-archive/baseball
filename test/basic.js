@@ -13,7 +13,7 @@ describe("baseball", function () {
         var mockLoggerCallCount = 0;
         var mockLogger = function () {
             mockLoggerCallCount++;
-            assert.equal(arguments[0], this);
+            assert.equal(arguments[0].toString(), this);
         };
         
         var testPrefix = baseball("TEST: ");
@@ -42,7 +42,7 @@ describe("baseball", function () {
         var mockLoggerCallCount = 0;
         var mockLogger = function () {
             mockLoggerCallCount++;
-            assert.equal(arguments[0], this);
+            assert.equal(arguments[0].toString(), this);
         };
         var finCallCount = 0;
         var fin = function () {
@@ -54,14 +54,51 @@ describe("baseball", function () {
         
         new Promise(function (resolve, reject) {
             reject(new Error("test"));
-        }).catch(baseball(mockLogger.bind("Error: test"))).then(fin);
+        }).catch(baseball(mockLogger.bind("Error: test"))).then(fin, done);
         
         new Promise(function (resolve, reject) {
             reject("test");
-        }).catch(baseball(mockLogger.bind("test"))).then(fin);
+        }).catch(baseball(mockLogger.bind("test"))).then(fin, done);
         
         new Promise(function (resolve, reject) {
             reject(1);
-        }).catch(baseball(mockLogger.bind("1"))).then(fin);
-    })
+        }).catch(baseball(mockLogger.bind(1))).then(fin, done);
+    });
+    
+    it("should pass through types", function (done) {
+        var mockLoggerCallCount = 0;
+        var mockLogger = function () {
+            mockLoggerCallCount++;
+            assert.equal(typeof(arguments[0]), this.typeval);
+            assert.equal(arguments[0].toString(), this.strval);
+        };
+        var finCallCount = 0;
+        var fin = function () {
+            finCallCount++;
+            if (finCallCount === 3) {
+                done();
+            }
+        }
+        
+        new Promise(function (resolve, reject) {
+            reject(new Error("test"));
+        }).catch(baseball(mockLogger.bind({
+            strval: "Error: test",
+            typeval: "object"
+        }))).then(fin, done);
+        
+        new Promise(function (resolve, reject) {
+            reject("test");
+        }).catch(baseball(mockLogger.bind({
+            strval: "test",
+            typeval: "string"
+        }))).then(fin, done);
+        
+        new Promise(function (resolve, reject) {
+            reject(1);
+        }).catch(baseball(mockLogger.bind({
+            strval: "1",
+            typeval: "number"
+        }))).then(fin, done);
+    });
 });
