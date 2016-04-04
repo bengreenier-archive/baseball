@@ -9,8 +9,6 @@ provides simplified promise error handling
 
 ## Install
 
-> Note: this isn't production ready yet!
-
 Just `npm install baseball`
 
 ## Use
