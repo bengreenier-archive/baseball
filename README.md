@@ -12,6 +12,21 @@ Just `npm install baseball`
 
 ## Use
 
+With existing promises:
+```
+var baseball = require('baseball');
+
+var throwAPitch = new Promise(function (resolve, reject) {
+  reject(new Error("sports are hard"));
+});
+
+// automatically catches and logs to console.error
+// ERR: sports are hard
+// and then rethrows (optionally)
+throwAPitch.catch(baseball);
+```
+
+With baseball wrapped promises:
 ```
 var baseball = require('baseball');
 
